@@ -11,7 +11,8 @@ export default {
       items: [{
         icon: 'home-outline',
         label: 'Dashboard',
-        external: true
+        external: false,
+        link: { name: 'projects.show' }
       }]
     }, {
       title: 'Profile',
@@ -52,7 +53,8 @@ export default {
       items: [{
         icon: 'paper-plane-outline',
         label: 'Deployments',
-        external: true
+        external: false,
+        link: { name: 'projects.deploy' }
       }, {
         icon: 'bar-chart-outline',
         label: 'Statistics',

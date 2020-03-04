@@ -1,24 +1,14 @@
-# liftoff-agileengine
+# Liftoff - AgileEngine
 
-## Project setup
+## Descirption
+
+This is a sample project based on Liftoff (devops & deployment platform) UI.
+
+## Run demo
+
+Run the following commands to install dependencies and run a local server at port 8080. No `.env` needed.
+
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

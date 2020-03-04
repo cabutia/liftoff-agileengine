@@ -11,7 +11,7 @@
       </button>
       <button
         class="w-full border-b border-gray-200 hover:bg-gray-200 px-2 py-4 cursor-pointer text-left"
-        v-for="project in projects"
+        v-for="project in orderedProjects"
         :key="project.id"
         @click="() => setCurrentProject(project)">
         <span class="text-gray-700 text-sm font-bold">{{ project.name }}</span><br>
@@ -52,7 +52,11 @@ export default {
     ...mapGetters({
       projects: 'projects/projects',
       currentProject: 'projects/currentProject'
-    })
+    }),
+    orderedProjects () {
+      const projects = [...this.projects]
+      return projects.reverse()
+    }
   },
   filters: {
     capitalize (value) {

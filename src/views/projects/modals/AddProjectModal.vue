@@ -7,7 +7,7 @@
       <RadioInput name="provider" value="gitlab" label="Gitlab" @input="updateProvider"/>
     </div>
     <TextInput name="providerUrl" label="Repository url" placeholder="myuser/myrepository" v-model="project.providerUrl"/>
-    <ModalButton label="Save project" classes="bg-purple-600 text-white" icon="save-outline"/>
+    <ModalButton label="Save project" classes="bg-purple-600 text-white" icon="save-outline" @click="addProject"/>
   </Modal>
 </template>
 
@@ -17,6 +17,7 @@ import TextInput from '@/components/forms/TextInput'
 import RadioInput from '@/components/forms/RadioInput'
 import InputLabel from '@/components/forms/InputLabel'
 import ModalButton from '@/components/modals/ModalButton'
+import eventService from '@/services/eventService'
 
 export default {
   name: 'AddProjectModal',
@@ -39,6 +40,11 @@ export default {
   methods: {
     updateProvider (value) {
       this.project.provider = value
+    },
+    addProject () {
+      this.$store.commit('projects/addProject', this.project)
+      eventService.emit(eventService.events.modals.hide, 'AddProjectModal')
+      eventService.emit(eventService.events.modals.show, 'ProjectsModal')
     }
   }
 }

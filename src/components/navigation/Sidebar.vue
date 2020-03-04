@@ -14,7 +14,8 @@
           v-for="(item, k) in group.items" :key="k"
           :label="item.label"
           :icon="item.icon"
-          :external="item.external"/>
+          :external="item.external"
+          :link="item.external ? null : item.link"/>
       </SidebarGroup>
     </div>
   </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full h-full md:pl-56 pt-20">
     <div class="w-full relative">
-      <div class="w-full flex flex-row items-center px-4 md:mt-4">
+      <div class="w-full flex sm:w-11/12 md:w-10/12 mx-auto px-4 md:mt-4">
         <ul class="flex items-center pl-4">
           <li>
             <router-link :to="linkToHome" class="flex items-center text-purple-600">
