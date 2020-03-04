@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/** 
+ * Custom reusable classes 
+ */
+
+
+ /** Toolbar buttons & tooltips */
+.toolbar .toolbar-button {
+    @apply .text-purple-600 .flex .items-center .h-6 .my-2 .rounded .text-lg .px-1;
+    transition: box-shadow .1s ease,
+                color .1s ease,
+                background .1s ease;
+}
+
+.toolbar .toolbar-button:hover {
+    @apply .shadow-lg .text-white .bg-purple-700;
+}
+
+.toolbar .toolbar-button:hover + .button-tooltip {
+    visibility: visible;
+    opacity: 1;
+    top: 90%;
+}
+
+.toolbar .toolbar-button + .button-tooltip {
+    @apply .bg-gray-800 .absolute .text-xs .text-white .px-1 .rounded-md;
+    top: 75%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .15s ease,
+                visibility .15s ease,
+                top .15s ease;
+}
+
+
+/** Sidebar & sidebar items */
+.sidebar-item {
+    @apply .mt-1;
+}
+
+.sidebar-item a {
+    @apply .px-2 .w-full .flex .items-center .h-8 .text-gray-800 .text-sm .rounded;
+    transition: background .15s ease,
+                box-shadow .15s ease;
+}
+
+.sidebar-item a span {
+    transition: padding .15s ease;
+}
+
+.sidebar-item a:hover {
+    @apply .bg-blue-500 .text-white .shadow-lg;
+}
+
+.sidebar-item a:hover span {
+    @apply .pl-2;
+}
+
+.sidebar-item a ion-icon {
+    @apply .w-4 .h-4 .mr-2 .text-blue-700;
+}
+
+/** Modals */
+.modal-overlay {
+    @apply .fixed .top-0 .left-0 .w-screen .h-screen;
+    background: rgba(0,0,0,0.7);
+}
