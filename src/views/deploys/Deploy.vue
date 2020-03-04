@@ -10,6 +10,11 @@
             <div class="w-auto mr-auto flex items-center px-2">
               <p class="text-sm">{{ task.name }}</p>
             </div>
+            <div class="h-12 w-12 flex items-center justify-center" v-if="task.status < 1">
+              <button type="button" class="flex items-center justify-center p-2 hover:shadow hover:bg-white rounded">
+                <ion-icon name="terminal-outline"/>
+              </button>
+            </div>
             <div class="h-12 w-12 flex items-center justify-center">
               <ion-icon name="checkmark-done-outline" v-if="task.status === 0"/>
               <p v-if="task.status === 1">...</p>
@@ -18,50 +23,94 @@
         </transition-group>
       </div>
     </template>
+    <template slot="modals">
+      <DeployProjectModal/>
+    </template>
   </Screen>
 </template>
 
 <script>
 import Screen from '@/components/screen/Screen'
+import DeployProjectModal from '@/views/projects/modals/DeployProjectModal'
+import eventService from '@/services/eventService'
 
 export default {
   name: 'Deploy',
   components: {
-    Screen
+    Screen,
+    DeployProjectModal
   },
   data () {
     return {
       loading: true,
-      tasks: [],
+
       dummyTasks: [{
         id: 1,
         name: 'Clone new release',
-        status: 0
+        status: 2
       }, {
         id: 2,
         name: 'Install composer dependencies',
-        status: 0
+        status: 2
       }, {
         id: 3,
         name: 'Run migrations',
-        status: 1
+        status: 2
+      }, {
+        id: 4,
+        name: 'Install npm dependencies',
+        status: 2
+      }, {
+        id: 5,
+        name: 'Build npm assets',
+        status: 2
+      }, {
+        id: 6,
+        name: 'Reload FPM',
+        status: 2
       }]
     }
   },
   mounted () {
-    this.slowlyLoadTasks()
+    this.listenForTaskUpdate()
+    this.slowlyUpdateTasks()
   },
   methods: {
-    slowlyLoadTasks () {
-      for (let i = 0; i < this.dummyTasks.length; i++) {
+    slowlyUpdateTasks () {
+      const sequence = [
+        { taskId: 1, status: 1, timeout: 1 },
+        { taskId: 1, status: 0, timeout: 2 },
+        { taskId: 2, status: 1, timeout: 2 },
+        { taskId: 2, status: 0, timeout: 3 },
+        { taskId: 3, status: 1, timeout: 3 },
+        { taskId: 3, status: 0, timeout: 4 },
+        { taskId: 4, status: 1, timeout: 4 },
+        { taskId: 4, status: 0, timeout: 5 },
+        { taskId: 5, status: 1, timeout: 5 },
+        { taskId: 5, status: 0, timeout: 6 },
+        { taskId: 6, status: 1, timeout: 6 },
+        { taskId: 6, status: 0, timeout: 7 }
+      ]
+      for (let i = 0; i < sequence.length; i++) {
+        const taskUpdate = sequence[i]
         setTimeout(() => {
-          this.$set(this.tasks, i, this.dummyTasks[i])
-        }, i * 1500)
+          eventService.emit(eventService.events.tasks.updated, {
+            id: taskUpdate.taskId,
+            status: taskUpdate.status
+          })
+        }, taskUpdate.timeout * 1000)
       }
+    },
+    listenForTaskUpdate () {
+      eventService.on(eventService.events.tasks.updated, this.updateTask)
+    },
+    updateTask (updatedTask) {
+      const task = this.dummyTasks.find(task => task.id === updatedTask.id)
+      task.status = updatedTask.status
     },
     getClassesForTaskStatus (status) {
       if (status === 0) {
-        return 'bg-gray-200'
+        return 'bg-green-200'
       }
       if (status === 1) {
         return 'bg-white'
@@ -74,6 +123,11 @@ export default {
       if (status === 1) {
         return 'bg-white'
       }
+    }
+  },
+  computed: {
+    tasks () {
+      return this.dummyTasks.filter(task => task.status < 2)
     }
   }
 }

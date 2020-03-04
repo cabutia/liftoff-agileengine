@@ -9,6 +9,14 @@ export default {
     loaders: {
       show: 'loader.show',
       hide: 'loader.hide'
+    },
+    tasks: {
+      updated: 'task.updated'
+    },
+    sidebar: {
+      show: 'sidebar.show',
+      hide: 'sidebar.hide',
+      toggle: 'sidebar.toggle'
     }
   },
   emit: (event, payload) => {

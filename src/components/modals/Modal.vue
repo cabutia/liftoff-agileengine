@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full fixed top-0 left-0">
+  <div class="w-full fixed top-0 left-0 z-30">
     <transition name="fade-modal">
       <div class="modal-overlay" @click.stop="visible = false" v-if="visible">
       </div>
     </transition>
     <transition name="swipe-modal">
-      <ModalContent v-if="visible" :title="title">
+      <ModalContent v-if="visible" :title="title" @close-click="hideModal">
         <slot/>
       </ModalContent>
     </transition>
@@ -41,24 +41,31 @@ export default {
   },
   methods: {
     listenToModalChanges () {
-      eventService.on(eventService.events.modals.show, this.showModal)
-      eventService.on(eventService.events.modals.hide, this.hideModal)
-      eventService.on(eventService.events.modals.toggle, this.toggleModal)
+      eventService.on(eventService.events.modals.show, name => {
+        if (name === this.name) this.showModal()
+      })
+      eventService.on(eventService.events.modals.hide, name => {
+        if (name === this.name) this.hideModal()
+      })
+      eventService.on(eventService.events.modals.toggle, payload => {
+        if (payload.name === this.name) this.toggleModal(payload)
+      })
     },
-    showModal (name) {
-      if (this.name === name) {
-        this.visible = true
-      }
+    showModal () {
+      this.visible = true
+      this.setBodyOverflow(false)
     },
-    hideModal (name) {
-      if (this.name === name) {
-        this.visible = false
-      }
+    hideModal () {
+      this.visible = false
+      this.setBodyOverflow(true)
     },
     toggleModal (payload) {
       this.name === payload.name && payload.state
         ? this.showModal()
         : this.hideModal()
+    },
+    setBodyOverflow (overflow) {
+      document.body.style.overflow = overflow ? 'auto' : 'hidden'
     }
   }
 }

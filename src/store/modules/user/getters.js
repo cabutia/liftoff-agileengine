@@ -1,3 +1,4 @@
 export default {
-  currentUser: state => state.user
+  currentUser: state => state.user,
+  sidebar: state => state.sidebar
 }

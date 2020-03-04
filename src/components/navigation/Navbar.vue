@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full flex flex-row items-center fixed top-0 left-0">
-    <div class="ml-56 flex w-full p-4">
+  <div class="w-full flex flex-row items-center fixed top-0 left-0 z-20">
+    <div class="hidden md:flex md:ml-56 w-full p-4">
       <div class="flex items-center justify-between w-full bg-white rounded-md shadow-lg h-10 toolbar">
         <div class="flex">
           <div class="flex px-1">
@@ -10,7 +10,7 @@
               </span>
             </ToolbarButton>
           </div>
-          <div class="flex px-1">
+          <div class="hidden lg:flex px-1">
             <ToolbarButton tooltip="Projects" icon="apps-outline" @click="showProjectsModal"/>
             <ToolbarButton tooltip="Servers" icon="server-outline"/>
             <ToolbarButton tooltip="Routines" icon="layers-outline"/>
@@ -30,6 +30,21 @@
         </div>
       </div>
       <DeployButton @click="showDeployModal"/>
+    </div>
+    <div class="flex md:hidden w-full p-4">
+      <div class="flex items-center justify-between w-full bg-white rounded-md shadow-lg h-10 toolbar px-1">
+        <ToolbarButton icon="menu-outline" @click="toggleSidebar">
+          <span class="text-gray-800 ml-1 whitespace-no-wrap hidden md:inline">
+            {{ currentUser.name }}
+          </span>
+        </ToolbarButton>
+        <DeployButton @click="showDeployModal"/>
+        <ToolbarButton icon="person-circle-outline">
+          <span class="text-gray-800 ml-1 whitespace-no-wrap hidden md:inline">
+            {{ currentUser.name }}
+          </span>
+        </ToolbarButton>
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +67,9 @@ export default {
     },
     showProjectsModal () {
       eventService.emit(eventService.events.modals.show, 'ProjectsModal')
+    },
+    toggleSidebar () {
+      eventService.emit(eventService.events.sidebar.toggle)
     }
   },
   computed: {
